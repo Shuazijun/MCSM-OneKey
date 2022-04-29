@@ -4,7 +4,7 @@ echo. ==================MCSM一键反代==================
 
 CLS
 ::nginx 所在目录
-set NGINX_DIR=%~dp0
+set NGINX_DIR=%~dp0Nginx\
 color 0a
 TITLE MCSM反代管理
 CLS
@@ -45,8 +45,10 @@ set /p ID=
     IF "%id%"=="6" GOTO checkConf
     IF "%id%"=="7" GOTO openwebsslfiles
     IF "%id%"=="8" GOTO openDaemonSslFiles
+    IF "%id%"=="8" GOTO MENU
     IF "%id%"=="0" EXIT
 PAUSE
+GOTO MENU
 
 ::*************************************************************************************************************
 ::启动
@@ -109,7 +111,7 @@ PAUSE
 
     IF EXIST "%NGINX_DIR%nginx.exe" (
         echo "start '' nginx.exe"
-        start "" nginx.exe
+        start "Nginx-Reverse-Proxy" /min nginx.exe
     )
     echo.OK
     goto :eof
@@ -138,19 +140,19 @@ PAUSE
     cd "%NGINX_DIR%"
     nginx -s reload
 	echo.已重载配置......
-	TIMEOUT /T 3 /NOBREAK
+	TIMEOUT /T 3
     goto :eof
   
 ::打开Web端SSL证书文件
 :openWebSslFiles
     echo.
-    start notepad "%NGINX_DIR%\conf\ssl\Web\cert.pem"
-    start notepad "%NGINX_DIR%\conf\ssl\Web\key.key"
+    start notepad "%NGINX_DIR%conf\ssl\Web\cert.pem"
+    start notepad "%NGINX_DIR%conf\ssl\Web\key.key"
     goto :eof
     
 ::打开Daemon端SSL证书文件
 :openDaemonSslFiles
     echo.
-    start notepad "%NGINX_DIR%\conf\ssl\Daemon\cert.pem"
-    start notepad "%NGINX_DIR%\conf\ssl\Daemon\key.key"
+    start notepad "%NGINX_DIR%conf\ssl\Daemon\cert.pem"
+    start notepad "%NGINX_DIR%conf\ssl\Daemon\key.key"
     goto :eof

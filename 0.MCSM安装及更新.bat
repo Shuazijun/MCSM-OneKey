@@ -3,7 +3,7 @@ REM 提供Windows下MCSM和守护进程的检查更新功能
 echo ================MCSM安装及更新================
 ::MCSM以及运行库所在目录
 set MCSM_DIR=%~dp0
-set GIT=%~dp0\Runtime\PortableGit\bin\git.exe
+set GIT=%~dp0Runtime\PortableGit\bin\git.exe
 color 0a
 TITLE MCSM安装及更新
 CLS
@@ -28,8 +28,14 @@ set /p ID=
     IF "%id%"=="2" GOTO gitupdate
     IF "%id%"=="3" GOTO backupfiles
     IF "%id%"=="4" GOTO MENU
+    IF "%id%"=="5" GOTO MENU
+    IF "%id%"=="6" GOTO MENU
+    IF "%id%"=="7" GOTO MENU
+    IF "%id%"=="8" GOTO MENU
+    IF "%id%"=="9" GOTO MENU
     IF "%id%"=="0" EXIT
 PAUSE
+GOTO MENU
 
 ::*************************************************************************************************************
 
@@ -66,9 +72,9 @@ PAUSE
     echo.MCSManager 守护进程下载完成
     TIMEOUT /T 3
     echo.正在重命名文件夹
-    ren "%MCSM_DIR%\MCSManager-Web-Production" "Web"
+    ren "%MCSM_DIR%MCSManager-Web-Production" "Web"
     echo.已重命名Web项目文件夹
-    ren "%MCSM_DIR%\MCSManager-Daemon-Production" "Daemon"
+    ren "%MCSM_DIR%MCSManager-Daemon-Production" "Daemon"
     echo.已重命名Daemon项目文件夹
 	echo.
 	echo.=================================================
@@ -89,7 +95,7 @@ PAUSE
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    cd %MCSM_DIR%\Web
+    cd %MCSM_DIR%Web
     "%GIT%" init
     "%GIT%" remote add origin https://gitee.com/mcsmanager/MCSManager-Web-Production.git
     "%GIT%" fetch --all
@@ -105,7 +111,7 @@ PAUSE
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    cd %MCSM_DIR%\Daemon
+    cd %MCSM_DIR%Daemon
     "%GIT%" init
     "%GIT%" remote add origin https://gitee.com/mcsmanager/MCSManager-Daemon-Production.git
     "%GIT%" fetch --all
@@ -134,7 +140,7 @@ PAUSE
 	GOTO MENU
     )
     echo.Web 文件夹存在, 开始备份.....
-    xcopy/e/y/d "%MCSM_DIR%\Web" "%MCSM_DIR%\Backups\Web"
+    xcopy/e/y/d "%MCSM_DIR%Web" "%MCSM_DIR%Backups\Web"
     cd %MCSM_DIR%
     echo.检测文件是否存在......
     if not exist "Daemon" (
@@ -143,7 +149,7 @@ PAUSE
 	GOTO MENU
     )
     echo.Daemon 文件夹存在, 开始备份.....
-    xcopy/e/y/d "%MCSM_DIR%\Daemon" "%MCSM_DIR%\Backups\Daemon"
+    xcopy/e/y/d "%MCSM_DIR%Daemon" "%MCSM_DIR%Backups\Daemon"
     echo.=================================================
     echo.               已完成全量备份
     echo.=================================================

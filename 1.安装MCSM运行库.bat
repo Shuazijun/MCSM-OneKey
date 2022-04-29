@@ -3,7 +3,7 @@ REM 提供Windows下MCSM运行库安装、卸载
 echo ==================MCSM运行库管理==================
 ::MCSM以及运行库所在目录
 set MCSM_DIR=%~dp0
-set WGET=%~dp0\Runtime\Wget\wget.exe
+set WGET=%~dp0Runtime\Wget\wget.exe
 color 0a
 TITLE MCSM运行库管理
 CLS
@@ -42,8 +42,11 @@ set /p ID=
     IF "%id%"=="5" GOTO openwebconfig
     IF "%id%"=="6" GOTO opendaemon
     IF "%id%"=="7" GOTO opendaemonconfig
+    IF "%id%"=="8" GOTO MENU
+    IF "%id%"=="9" GOTO MENU
     IF "%id%"=="0" EXIT
 PAUSE
+GOTO MENU
 
 ::*************************************************************************************************************
 ::安装 Node.JS 14.19.1 x64 环境
@@ -53,7 +56,7 @@ PAUSE
 
 ::安装Web前端和Daemon守护进程的依赖
 :installwebanddaemon
-    if not exist "%MCSM_DIR%\Web" (
+    if not exist "%MCSM_DIR%Web" (
 	echo. Web 文件夹不存在，请重新下载MCSM
 	TIMEOUT /T 3
 	GOTO MENU
@@ -62,17 +65,17 @@ PAUSE
     echo.========================================
     echo.            Web依赖安装完成
     echo.========================================
-    TIMEOUT /T 3 /NOBREAK
-    if not exist "%MCSM_DIR%\Deamon" (
-	echo. Deamon 文件夹不存在，请重新下载MCSM
+    TIMEOUT /T 3
+    if not exist "%MCSM_DIR%Daemon" (
+	echo. Daemon 文件夹不存在，请重新下载MCSM
 	TIMEOUT /T 3
 	GOTO MENU
     )
     call :installdaemon
     echo.========================================
-    echo.           Deamon依赖安装完成
+    echo.           Daemon依赖安装完成
     echo.========================================
-    TIMEOUT /T 3 /NOBREAK
+    TIMEOUT /T 3
     GOTO MENU
 
 ::删除Web前端和Daemon守护进程的依赖
@@ -107,94 +110,104 @@ PAUSE
     echo.
     echo.正在下载 Node.JS 14.19.1 x64 环境安装包......
     echo.
-    cd %MCSM_DIR%\Runtime\NodeJS
+    cd %MCSM_DIR%Runtime\NodeJS
     "%WGET%" https://nodejs.org/download/release/v14.19.1/node-v14.19.1-x64.msi
-    if not exist "%MCSM_DIR%\Runtime\NodeJS\node-v14.19.1-x64.msi" (
+    if not exist "%MCSM_DIR%Runtime\NodeJS\node-v14.19.1-x64.msi" (
 	echo. node-v14.19.1-x64.msi 不存在，请检查下载链接
 	TIMEOUT /T 3
 	GOTO MENU
     )
     echo.下载成功!
 	echo.正在安装,请等待安装完成......
-	start "" /wait "msiexec" /i "%MCSM_DIR%\Runtime\NodeJS\node-v14.19.1-x64.msi" /qb
+	start "" /wait "msiexec" /i "%MCSM_DIR%Runtime\NodeJS\node-v14.19.1-x64.msi" /qb
 	echo.========================================
     echo.           NodeJS安装完成
     echo.========================================
-    TIMEOUT /T 3 /NOBREAK
+    TIMEOUT /T 3
     goto :eof
 
 :installweb
     echo.
     echo.安装Web依赖......
-	cd %MCSM_DIR%\Web && npm install
+	cd %MCSM_DIR%Web && npm install
     goto :eof
 
 :installdaemon
     echo.
     echo.安装Daemon依赖......
-	cd %MCSM_DIR%\Daemon && npm install
+	cd %MCSM_DIR%Daemon && npm install
     goto :eof
 
 :uninstallwebanddaemon
 	echo.
     echo.正在删除Web的依赖......
-    if not exist "%MCSM_DIR%\Web" (
+    if not exist "%MCSM_DIR%Web" (
 	echo. Web 文件夹不存在, 请下载安装后再使用
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    rd /s /q %MCSM_DIR%\Web\node_modules
-    del /f /s /q %MCSM_DIR%\Web\package-lock.json
-    if not exist "%MCSM_DIR%\Daemon" (
+    rd /s /q %MCSM_DIR%Web\node_modules
+    del /f /s /q %MCSM_DIR%Web\package-lock.json
+    if not exist "%MCSM_DIR%Daemon" (
 	echo. Daemon 文件夹不存在, 请下载安装后再使用
 	TIMEOUT /T 3
 	GOTO MENU
     )
 	echo.正在删除Daemon的依赖......
-    rd /s /q %MCSM_DIR%\Daemon\node_modules
-    del /f /s /q %MCSM_DIR%\Daemon\package-lock.json
+    rd /s /q %MCSM_DIR%Daemon\node_modules
+    del /f /s /q %MCSM_DIR%Daemon\package-lock.json
     echo.========================================
     echo.           依赖删除完成
     echo.========================================
-    TIMEOUT /T 3 /NOBREAK
+    TIMEOUT /T 3
     goto :eof
 
 :openweb
 	echo.
-	if not exist "%MCSM_DIR%\Web" (
+	if not exist "%MCSM_DIR%Web" (
 	echo. Web 文件夹不存在, 请下载安装后再使用
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    start "" "%MCSM_DIR%\Web"
+    start "" "%MCSM_DIR%Web"
     goto :eof
 
 :opendaemon
 	echo.
-	if not exist "%MCSM_DIR%\Daemon" (
+	if not exist "%MCSM_DIR%Daemon" (
 	echo. Daemon 文件夹不存在, 请下载安装后再使用
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    start "" "%MCSM_DIR%\Daemon"
+    start "" "%MCSM_DIR%Daemon"
     goto :eof
 
 :openwebconfig
 	echo.
-	if not exist "%MCSM_DIR%\Web" (
+	if not exist "%MCSM_DIR%Web" (
 	echo. Web 文件夹不存在, 请下载安装后再使用
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    start notepad "%MCSM_DIR%\Web\data\SystemConfig\config.json"
+    if not exist "%MCSM_DIR%Web\data\SystemConfig\config.json" (
+	echo. Web 配置文件不存在, 请运行后再试
+	TIMEOUT /T 3
+	GOTO MENU
+    )
+    start notepad "%MCSM_DIR%Web\data\SystemConfig\config.json"
     goto :eof
 
 :opendaemonconfig
 	echo.
-	if not exist "%MCSM_DIR%\Daemon" (
+	if not exist "%MCSM_DIR%Daemon" (
 	echo. Daemon 文件夹不存在, 请下载安装后再使用
 	TIMEOUT /T 3
 	GOTO MENU
     )
-    start notepad "%MCSM_DIR%\Daemon\data\Config\global.json"
+    if not exist "%MCSM_DIR%Daemon\data\Config\global.json" (
+	echo. Daemon 配置文件不存在, 请运行后再试
+	TIMEOUT /T 3
+	GOTO MENU
+    )
+    start notepad "%MCSM_DIR%Daemon\data\Config\global.json"
     goto :eof
