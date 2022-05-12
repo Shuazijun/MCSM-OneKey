@@ -14,7 +14,7 @@ color 0a
 echo.
 echo.=============MCSM运行库管理=============
 echo.
-    echo.  [1] 下载安装 Node.JS 环境（v14.19.1）
+    echo.  [1] 下载安装 Node.JS 环境（v14.19.2）
     echo.  [2] 安装Web前端和Daemon守护进程的依赖
     echo.  [3] 删除Web前端和Daemon守护进程的依赖
     echo.
@@ -108,18 +108,18 @@ GOTO MENU
 ::*************************************************************************************
 :installnodejs
     echo.
-    echo.正在下载 Node.JS 14.19.1 x64 环境安装包......
+    echo.正在下载 Node.JS 14.19.2 x64 环境安装包......
     echo.
     cd %MCSM_DIR%Runtime\NodeJS
-    "%WGET%" https://nodejs.org/download/release/v14.19.1/node-v14.19.1-x64.msi
-    if not exist "%MCSM_DIR%Runtime\NodeJS\node-v14.19.1-x64.msi" (
-	echo. node-v14.19.1-x64.msi 不存在，请检查下载链接
+    "%WGET%" https://nodejs.org/download/release/v14.19.2/node-v14.19.2-x64.msi
+    if not exist "%MCSM_DIR%Runtime\NodeJS\node-v14.19.2-x64.msi" (
+	echo. node-v14.19.2-x64.msi 不存在，请检查下载链接
 	TIMEOUT /T 3
 	GOTO MENU
     )
     echo.下载成功!
 	echo.正在安装,请等待安装完成......
-	start "" /wait "msiexec" /i "%MCSM_DIR%Runtime\NodeJS\node-v14.19.1-x64.msi" /qb
+	start "" /wait "msiexec" /i "%MCSM_DIR%Runtime\NodeJS\node-v14.19.2-x64.msi" /qb
 	echo.========================================
     echo.           NodeJS安装完成
     echo.========================================
